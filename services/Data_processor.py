@@ -29,6 +29,34 @@ class DataProcessor:
                     
                     result.append(track_info)
                     
+            elif 'artists' in data and 'items' in data['artists']:
+                for artist in data['artists']['items']:
+                    artists_data = artist['data']
+                    
+                    artist_id = str(artists_data.get('uri', 'No id')).split(':')[-1]
+                    
+                    artist_profile = artists_data['profile']
+                    artist_name = artist_profile.get('name', 'No name')
+                    
+                    artist_visuals = artists_data.get('visuals', None)
+                    if artist_visuals is not None:
+                        avatar_image = artist_visuals.get('avatarImage', None)
+                        if avatar_image is not None:
+                            artist_avatar = avatar_image.get('sources', [])[0].get('url', 'No Image')
+                        else:
+                            artist_avatar = 'No Image'
+                    else:
+                        artist_avatar = 'No Image'
+                    
+                    track_info = {
+                        'artist_name': artist_name,
+                        'artist_id': artist_id,
+                        'artist_avatar': artist_avatar
+                    }
+                    
+                    result.append(track_info)
+                    
+                    
         return result
     
     def get_tracks(self, track_id: str) -> List[Dict[str, Any]]:
