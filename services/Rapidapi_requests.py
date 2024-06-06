@@ -39,9 +39,3 @@ class RapidapiRequests():
         query_string = {"ids": artist_id}
         response = requests.get(url=URL_ARTISTS, headers=HEADERS, params=query_string)
         return response.json()
-    
-    @staticmethod
-    def artist_related(artist_id: str) -> Dict[str, Any] | None:
-        query_string = {"ids": artist_id}
-        response = requests.get(url=URL_RELATED, headers=HEADERS, params=query_string)
-        return response.json()
