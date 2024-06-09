@@ -32,3 +32,7 @@ async def get_track(processor: proc_type, track_id: str):
 @router.get("/lyrics")
 async def get_lyrics(processor: proc_type, track_id: str):
     return await processor.get_lyrics(track_id=track_id)
+
+@router.get("/playlist")
+async def get_playlist(processor: proc_type, playlist_id: str):
+    return await processor.get_playlist_tracks(playlist_id=playlist_id)

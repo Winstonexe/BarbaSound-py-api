@@ -135,7 +135,36 @@ class DataProcessor:
                 
         return result
     
-    # async def get_palylist_tracks(self, playlist_id: str) -> List[Dict[str, Any]]:
-    #     data = await self.api_service.get_playlist_tracks(playlist_id=playlist_id)
-    #     if data is None or 
+    async def get_playlist_tracks(self, playlist_id: str) -> List[Dict[str, Any]]:
+        data = await self.api_service.get_playlist_tracks(playlist_id=playlist_id)
+        if data is None or 'items' not in data:
+            return
+        
+        result =[]
+        for track in data['items']:
+            track_data = track['track']
+            
+            album = track_data['album']
+            if album is not None:
+                album_images = album.get('images', [])[0].get('url', 'No Image')
+            else:
+                album_images = 'No image'
+            
+            track_id = track_data.get('id', 'No id')
+            track_name = track_data.get('name', 'No name')
+            
+            artists = track_data['artists']
+            artist_names = [artist['name'] for artist in artists]
+            
+            track_info = {
+                "track_name": track_name,
+                "track_id": track_id,
+                "artist": ', '.join(artist_names),
+                "track_image": album_images
+            }
+            
+            result.append(track_info)
+        
+        return result
+            
         
